@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 )
@@ -13,6 +14,8 @@ func (app *application) serve() error {
 		Handler:     app.routes(),
 		IdleTimeout: time.Minute,
 	}
+
+	log.Printf("Starting server at: %v", app.config.port)
 
 	err := srv.ListenAndServe()
 
