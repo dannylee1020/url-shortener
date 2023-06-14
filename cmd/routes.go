@@ -12,5 +12,5 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/v1/shorten", app.ShortenURL)
 	router.Handle(http.MethodGet, "/v1/redirect/:url", app.RedirectHandler)
 
-	return router
+	return app.rateLimit(router)
 }
