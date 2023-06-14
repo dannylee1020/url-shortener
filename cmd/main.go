@@ -9,6 +9,8 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
+
+	"github.com/dannylee1020/url-shortener/internal/data"
 )
 
 type config struct {
@@ -22,6 +24,7 @@ type config struct {
 
 type application struct {
 	config config
+	models data.Models
 }
 
 func main() {
@@ -32,10 +35,6 @@ func main() {
 	flag.StringVar(&cfg.db.dsn, "db-dsn", os.Getenv("DB_DSN"), "db connection string")
 	flag.StringVar(&cfg.db.maxIdleTime, "db-max-idle-time", "15m", "db max idle time")
 
-	app := &application{
-		config: cfg,
-	}
-
 	// connect to database
 	db, err := openDB(cfg)
 	if err != nil {
@@ -43,6 +42,11 @@ func main() {
 	}
 
 	defer db.Close()
+
+	app := &application{
+		config: cfg,
+		models: data.NewModels(db),
+	}
 
 	app.serve()
 }
