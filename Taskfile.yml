@@ -1,0 +1,13 @@
+version: '3'
+
+dotenv: ['/.env']
+
+tasks:
+  migrate:
+    cmds:
+      - migrate -path=./migrations -database=$DB_DSN up
+
+  run:
+    cmds:
+      - go run ./cmd -db-dsn $DB_DSN
+
