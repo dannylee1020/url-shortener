@@ -20,6 +20,7 @@ type config struct {
 		dsn         string
 		maxIdleTime string
 	}
+	limiter bool
 }
 
 type application struct {
@@ -34,6 +35,7 @@ func main() {
 	flag.StringVar(&cfg.env, "environment", "development", "dev|prod")
 	flag.StringVar(&cfg.db.dsn, "db-dsn", os.Getenv("DB_DSN"), "db connection string")
 	flag.StringVar(&cfg.db.maxIdleTime, "db-max-idle-time", "15m", "db max idle time")
+	flag.BoolVar(&cfg.limiter, "rate-limiter", true, "turn on and off rate limiter")
 
 	// connect to database
 	db, err := openDB(cfg)
